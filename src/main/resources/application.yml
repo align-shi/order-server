@@ -1,0 +1,33 @@
+server-port: 8080
+server-context-path: /
+spring:
+  http:          # http协议的相关配置
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  datasource: #数据源
+    url: jdbc:mysql://localhost:3306/ofs?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true&useAffectedRows=true&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  thymeleaf:      # 前后端不分离的系统中的模板技术，通过视图解析器进行解析操作
+#    cache: false
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    encoding: UTF-8
+#    mode: HTML5
+  devtools:   # 热部署
+    restart:
+      enabled: true  #设置开启热部署
+  logging:    # 日志
+    config: classpath:log4j2.yml
+debug: true
+mybatis:    # ORM设置
+  configuration:
+    map-underscore-to-camel-case: true    #下划线规范和驼峰规范的转换
+pagehelper:   # 分页
+  helperDialect: mysql    # 设置方言，指定分页插件针对的具体的数据库
+server:
+  max-http-header-size:102400
+

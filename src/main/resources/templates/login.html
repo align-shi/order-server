@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" href="../css/login.css">
+    <link rel="stylesheet" th:href="@{/node_modules/bootstrap/dist/css/bootstrap.css}" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+    <body class="container">
+        <section class="login_block justify-content-center align-items-center">
+            <aside id="logo">
+                <nav id="errorMsg" th:text="${message}"></nav>
+            </aside>
+            <article>
+                <form action="/api/v1/user/login" method="post">
+                    <fieldset>
+                        <legend hidden>用户登录</legend>
+                        <input type="text" name="userName" id="userName" class="form-control" placeholder="请输入用户名"><br>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码"><br>
+                        <button type="submit" class="btn btn-primary" style="width:100%">登录</button>
+                        <button type="submit" class="btn btn-secondary" style="width:100%;margin-top:10px;" id="btnRegister" formaction="/api/v1/user/doRegister">注册</button>
+                    </fieldset>
+                </form>
+            </article>
+        </section>
+    </body>
+</html>

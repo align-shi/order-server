@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="mybatis-generator/generator.properties" />
+    <!-- classPathEntry:数据库的JDBC驱动,换成你自己的驱动位置 -->
+    <classPathEntry location="${local.path}" />
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 数据库链接URL，用户名、密码 -->
+        <jdbcConnection connectionURL="${jdbc.url}" driverClass="${jdbc.driverClassName}"
+                        password="${jdbc.password}" userId="${jdbc.user}" />
+
+        <!-- 指定JDBC和Java类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal，默认为false false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="${package.model}" targetProject="${targetProject}">
+            <!-- 是否在当前路径下新加一层schema,eg：false路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="constructorBased" value="true" />
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+            <!-- <property name="rootClass" value="com.ajs.base.BaseEntity" /> -->
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="${package.sql.mapper}" targetProject="${targetProject}">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator targetPackage="${package.dao.mapper}" targetProject="${targetProject}" type="ANNOTATEDMAPPER">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 要生成的表 tableName 是数据库中的表名或视图名 domainObjectName 是实体类名 -->
+        <table tableName="of_user" domainObjectName="User">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+            <!-- 忽略列，不生成bean 字段 -->
+            <!-- <ignoreColumn column="FRED" /> -->
+            <!-- 指定列的java数据类型 -->
+            <!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />   -->
+        </table>
+        <table tableName="of_desk" domainObjectName="Desk">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="of_order" domainObjectName="Order">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="of_order_detail" domainObjectName="OrderDetail">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="of_product" domainObjectName="Product">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="of_product_image" domainObjectName="ProductImage">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="of_type" domainObjectName="Type">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/css/base.css}" href="../css/base.css">
+    <link rel="stylesheet" th:href="@{/js/bootstrap4.3.1/bootstrap.min.css}" href="../js/bootstrap4.3.1/bootstrap.min.css">
+    <script th:src="@{/js/jquery.min.js}" src="../js/jquery.min.js"></script>
+    <script th:src="@{/js/bootstrap4.3.1/bootstrap.min.js}" src="../js/bootstrap4.3.1/bootstrap.min.js"></script>
+    <title>用户信息管理</title>
+    <style>
+        .text {
+            width: 8rem;
+            text-align: right;
+        }
+        
+        .vertical-spacing {
+            margin-top: 1.2rem;
+        }
+        
+        .checkedRow {
+            background-color: papayawhip !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container-fluid">
+        <nav class="row navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">权限管理模块&nbsp;->&nbsp;用户信息管理页面&nbsp;<span id="operationMsg"></span></a>
+        </nav>
+        <section class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+            <article class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="all" class="form-control-md"></th>
+                            <th>用户名</th>
+                            <th>昵称</th>
+                            <th>密码</th>
+                            <th>性别</th>
+                            <th>email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+                        <tr>
+                            <td><input type="checkbox" data-oid="1" class="cbxSelect form-control-md"></td>
+                            <td>admin</td>
+                            <td>悔创阿里jack马</td>
+                            <td>123456</td>
+                            <td>男</td>
+                            <td>admin@qq.com</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-oid="2" class="cbxSelect form-control-md"></td>
+                            <td>test</td>
+                            <td>一般家庭马化腾</td>
+                            <td>666</td>
+                            <td>男</td>
+                            <td>test@qq.com</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-oid="3" class="cbxSelect form-control-md"></td>
+                            <td>manager</td>
+                            <td>北大还行萨贝宁</td>
+                            <td>123</td>
+                            <td>男</td>
+                            <td>manager@qq.com</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-oid="4" class="cbxSelect form-control-md"></td>
+                            <td>abc</td>
+                            <td>不知妻美刘强东</td>
+                            <td>666</td>
+                            <td>男</td>
+                            <td>manager@qq.com</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-oid="5" class="cbxSelect form-control-md"></td>
+                            <td>wang</td>
+                            <td>一无所有王健林</td>
+                            <td>123</td>
+                            <td>男</td>
+                            <td>manager@qq.com</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-oid="6" class="cbxSelect form-control-md"></td>
+                            <td>cba</td>
+                            <td>家里最丑刘亦菲</td>
+                            <td>123</td>
+                            <td>女</td>
+                            <td>manager@qq.com</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div class="btn-group btn-group-lg float-left" role="group">
+                                    <button type="button" class="btn btn-primary" id="btnAdd">新建</button>
+                                    <button type="button" id="btnUpdate" class="btn btn-primary">修改</button>
+                                    <button type="button" id="btnDelete" class="btn btn-primary">删除</button>
+                                </div>
+                                <nav class="float-right">
+                                    <ul class="pagination pagination-lg">
+                                        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                    </ul>
+                                </nav>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </article>
+        </section>
+        <section class="modal" id="userOperation">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><span id="modalShowInfo"></span>用户信息</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" class="form-group">
+                            <fieldset style="border:0px;">
+                                <legend hidden>用户操作</legend>
+                                <div class="form-inline">
+                                    <span class="text">用户名：</span><input type="text" name="userName" class="form-control vertical-spacing">
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">昵称：</span><input type="text" name="nickName" class="form-control vertical-spacing">
+                                </div>
+
+                                <div class="form-inline">
+                                    <span class="text">密码：</span><input type="password" name="password" class="form-control vertical-spacing">
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">性别：</span>
+                                    <input type="radio" name="sex" value="1" class="form-control vertical-spacing"><span class="vertical-spacing">男</span>&nbsp;&nbsp;
+                                    <input type="radio" name="sex" value="2" class="form-control vertical-spacing"><span class="vertical-spacing">女</span>
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">email：</span><input type="text" name="email" class="form-control vertical-spacing">
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUserOperationAdd">保存</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script defer>
+        function selectRow(event) {
+            if (event.target.tagName.toLowerCase() == 'td') {
+                let input = event.target.parentNode.firstElementChild.firstElementChild;
+                input.toggleAttribute("checked");
+                event.target.parentNode.classList.toggle("checkedRow");
+            }
+        }
+
+        function allSelect() {
+            let all = document.getElementById("all");
+            document.querySelectorAll(".cbxSelect").forEach(element => {
+                element.checked = all.checked;
+                if (all.checked) {
+                    element.parentNode.parentNode.classList.add("norTableCheckedRow");
+                } else {
+                    element.parentNode.parentNode.classList.remove("norTableCheckedRow");
+                }
+            });
+        }
+
+        function doDelete(event) {
+            let list = document.querySelectorAll(".cbxSelect");
+            let parameter = "";
+            if (window.confirm("你确定要进行删除操作吗？")) {
+                [...list].filter(element => element.checked).forEach((element) => {
+                    if (parameter == '') {
+                        parameter += element.dataset.oid;
+                    } else {
+                        parameter += ',';
+                        parameter += element.dataset.oid;
+                    }
+                });
+                if (parameter == '') {
+                    alert("请选择要删除的数据行！");
+                }
+                console.log(parameter);
+            }
+        }
+
+        function doAdd() {
+            $("#userOperation").modal();
+            document.getElementById("operationMsg").innerHTML = "->&nbsp;新增用户";
+            document.getElementById("modalShowInfo").innerHTML = "新增";
+        }
+
+        function doUpdate() {}
+
+        function updateSearch() {
+            let list = document.querySelectorAll(".cbxSelect");
+            let parameter = "";
+            let count = 0;
+            let fList = [...list].filter(element => element.checked);
+            if (fList.length > 1) {
+                alert("一只能修改一行数据！");
+            } else if (fList.length == 0) {
+                alert("请选择要修改的数据行！");
+            } else {
+                parameter = fList[0].dataset.oid;
+                $("#userOperation").modal();
+                document.getElementById("operationMsg").innerHTML = "->&nbsp;修改用户";
+                document.getElementById("modalShowInfo").innerHTML = "修改";
+            }
+        }
+
+        function userOperationAdd() {
+            let operationModel = document.getElementById("operationMsg").innerHTML;
+            console.log(operationModel);
+            if (operationModel.indexOf("修改") != -1) {
+                alert("修改修改");
+            } else if (operationModel.indexOf("新增") != -1) {
+                alert("新增操作");
+            }
+        }
+
+        document.getElementById("table_body").addEventListener("click", selectRow, false); //选择行操作
+        document.querySelectorAll(".cbxSelect").forEach((element) => {
+            element.addEventListener("change", () => {
+                element.toggleAttribute("checked");
+                element.parentNode.parentNode.classList.toggle("norTableCheckedRow");
+            });
+        });
+        document.getElementById("all").addEventListener("change", allSelect, false);
+        //CRUD delete
+        document.getElementById("btnDelete").addEventListener("click", doDelete, false);
+        //CRUD update
+        document.getElementById("btnUpdate").addEventListener("click", updateSearch, false);
+        //CRUD add
+        document.getElementById("btnAdd").addEventListener("click", doAdd, false);
+        //modal user operation
+        document.getElementById("btnUserOperationAdd").addEventListener("click", userOperationAdd, false);
+        //page select
+        document.querySelector(".pagination").addEventListener("click", event => {
+            let activeObject = document.querySelector(".pagination>.active");
+            if (activeObject != null) {
+                activeObject.classList.remove("active");
+            }
+            event.target.parentNode.classList.add("active");
+        }, false);
+    </script>
+</body>
+
+</html>

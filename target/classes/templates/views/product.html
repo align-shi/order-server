@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/css/base.css}" href="../css/base.css">
+    <link rel="stylesheet" th:href="@{/node_modules/bootstrap/dist/css/bootstrap.css}" href="../jnode_modules/bootstrap/dist/css/bootstrap.css">
+    <script th:src="@{/node_modules/jquery/dist/jquery.min.js}" src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script th:src="@{/node_modules/bootstrap/dist/js/bootstrap.js}" src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script th:src="@{/node_modules/axios/dist/axios.js}" src="../node_modules/axios/dist/axios.js"></script>
+    <title>菜品管理</title>
+    <style>
+        .text {
+            width: 8rem;
+            text-align: right;
+        }
+        
+        .vertical-spacing {
+            margin-top: 0.5rem;
+        }
+        .longString{
+            max-width:300px;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .checkedRow {
+            background-color: papayawhip !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container-fluid">
+        <nav class="row navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">权限管理模块&nbsp;->&nbsp;用户信息管理页面&nbsp;<span id="operationMsg"></span></a>
+        </nav>
+        <section class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+            <article class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;text-align:center"><input type="checkbox" id="all" class="form-control-md"></th>
+                            <th style="width:150px;text-align:center">菜名</th>
+                            <th style="width:80px;text-align:center">价格</th>
+                            <th style="width:80px;text-align:center">真实价格</th>
+                            <th style="width:80px;text-align:center">类型</th>
+                            <th style="width:150px;text-align:center">图片</th>
+                            <th style="width:60px;text-align:center">销量</th>
+                            <th style="width:60px;text-align:center">状态</th>
+                            <th style="width:100px;text-align:center">特色</th>
+                            <th style="width:300px;text-align:center">详情</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+                        <tr th:each="product:${page.getList()}" style="text-align: center">
+                            <td style="text-align:center">
+                                <input type="checkbox" th:attr="data-oid=${product.id}" class="cbxSelect form-control-md">
+                            </td>
+                            <td th:text="${product.name}"></td>
+                            <td th:text="${product.price}"></td>
+                            <td th:text="${product.realPrice}"></td>
+                            <td th:text="${product.typeName}"></td>
+                            <td th:text="${product.imageUrl}"></td>
+                            <td th:text="${product.salesVolume}"></td>
+                            <td th:text="${product.stauts}"></td>
+                            <td th:text="${product.trait}"></td>
+                            <td class="longString" th:text="${product.detail}" th:title="${product.detail}"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="10">
+                                <div class="btn-group btn-group-lg float-left" role="group">
+                                    <button type="button" class="btn btn-primary" id="btnAdd">新建</button>
+                                    <button type="button" id="btnUpdate" class="btn btn-primary">修改</button>
+                                    <button type="button" id="btnDelete" class="btn btn-primary">删除</button>
+                                </div>
+                                <nav class="float-right">
+                                    <ul class="pagination pagination-lg">
+                                        <li th:class="${page.getPageNum()==1}?'page-item disabled':'page_item'">
+                                            <a class="page-link" href="1">&laquo;</a>
+                                        </li>
+                                        <li class="page-item" th:each="pageNumber,state:${#numbers.sequence(1,page.getPages())}"
+                                            th:class="${pageNumber==page.getPageNum()}?'page-item active':'page-item'">
+                                            <a class="page-link" th:href="${pageNumber}" href="#" th:text="${pageNumber}"></a>
+                                        </li>
+                                        <li th:class="${page.getPageNum()==page.getPages()}?'page-item disabled':'page_item'">
+                                            <a class="page-link" th:href="${page.getPages()}" href="#">&raquo;</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </article>
+        </section>
+        <section class="modal" id="productOperation">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><span id="modalShowInfo"></span>菜品信息</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" id="addAndUpdateform" method="POST" class="form-group">
+                            <fieldset style="border:0px;">
+                                <legend hidden>新增菜品</legend>
+                                <input type="hidden" id="id" name="id" value="0">
+                                <div class="form-inline">
+                                    <span class="text">菜品名称：</span><input type="text" id="name" name="name" class="form-control vertical-spacing">
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">标注价钱：</span>￥<input type="number" id="price" name="price" class="form-control vertical-spacing">
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">真实价钱：</span>￥<input type="number" id="realPrice" name="realPrice" class="form-control vertical-spacing">
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">产品类型：</span>
+                                    <select class="form-control vertical-spacing" name="productType" id="productType">
+                                        <block th:each="type:${types}">
+                                            <option th:attr="value=${type.id}" th:text="${type.typeName}"></option>
+                                        </block>
+                                    </select>
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">菜品特色：</span><input type="text" id="trait" name="trait" class="form-control vertical-spacing">
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">销量：</span><input type="text" id="salesVolume" name="salesVolume" class="form-control vertical-spacing">
+                                </div>
+
+                                <div class="form-inline">
+                                    <span class="text">好评度：</span>1<input type="range" min="1" max="5" id="good" name="good" class="form-control vertical-spacing">5
+                                </div>
+                                <div class="form-inline">
+                                    <span class="text">详细介绍：</span>
+                                    <textarea name="detail" id="detail" class="form-control vertical-spacing"></textarea>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnProductOperationAdd">保存</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        function selectRow(event) {
+            if (event.target.tagName.toLowerCase() == 'td') {
+                let input = event.target.parentNode.firstElementChild.firstElementChild;
+                input.toggleAttribute("checked");
+                event.target.parentNode.classList.toggle("checkedRow");
+            }
+        }
+
+        function allSelect() {
+            let all = document.getElementById("all");
+            document.querySelectorAll(".cbxSelect").forEach(element => {
+                element.checked = all.checked;
+                if (all.checked) {
+                    element.parentNode.parentNode.classList.add("norTableCheckedRow");
+                } else {
+                    element.parentNode.parentNode.classList.remove("norTableCheckedRow");
+                }
+            });
+        }
+
+        function doDelete(event) {
+            let list = document.querySelectorAll(".cbxSelect");
+            let parameter = "";
+            if (window.confirm("你确定要进行删除操作吗？")) {
+                [...list].filter(element => element.checked).forEach((element) => {
+                    if (parameter == '') {
+                        parameter += element.dataset.oid;
+                    } else {
+                        parameter += ',';
+                        parameter += element.dataset.oid;
+                    }
+                });
+                if (parameter == '') {
+                    alert("请选择要删除的数据行！");
+                }
+                console.log(parameter);
+                window.location.href="/api/v1/product/delete/"+parameter;
+            }
+        }
+
+        function doAdd() {
+            $("#productOperation").modal();
+            document.getElementById("operationMsg").innerHTML = "->&nbsp;新增菜品";
+            document.getElementById("modalShowInfo").innerHTML = "新增";
+        }
+
+        function updateSearch() {
+            let list = document.querySelectorAll(".cbxSelect");
+            let parameter = "";
+            let count = 0;
+            let fList = [...list].filter(element => element.checked);
+            if (fList.length > 1) {
+                alert("一只能修改一行数据！");
+            } else if (fList.length == 0) {
+                alert("请选择要修改的数据行！");
+            } else {
+                parameter = fList[0].dataset.oid;
+                $("#productOperation").modal();
+                document.getElementById("operationMsg").innerHTML = "->&nbsp;修改菜品";
+                document.getElementById("modalShowInfo").innerHTML = "修改";
+                axios.get("/api/v1/product/search/"+parameter)
+                    .then(response=>{
+                        let product=response.data;
+                        document.getElementById("id").value=product.id;
+                        document.getElementById("name").value=product.name;
+                        document.getElementById("price").value=product.price;
+                        document.getElementById("realPrice").value=product.realPrice;
+                        document.getElementById("trait").value=product.trait;
+                        document.getElementById("salesVolume").value=product.salesVolume;
+                        document.getElementById("good").value=product.good;
+                        document.getElementById("productType").value=product.productType;
+                        document.getElementById("detail").innerHTML=product.detail;
+                    })
+                    .catch(error=>{console.log(error)});
+            }
+        }
+
+        function productOperationAdd() {
+            let operationModel = document.getElementById("operationMsg").innerHTML;
+            let form=document.querySelector("#addAndUpdateform");
+            if (operationModel.indexOf("修改") != -1) {
+                form.action="/api/v1/product/update";
+            } else if (operationModel.indexOf("新增") != -1) {
+                form.action="/api/v1/product/add";
+            }
+            form.submit();
+        }
+
+        document.getElementById("table_body").addEventListener("click", selectRow, false); //选择行操作
+        document.querySelectorAll(".cbxSelect").forEach((element) => {
+            element.addEventListener("change", () => {
+                element.toggleAttribute("checked");
+                element.parentNode.parentNode.classList.toggle("norTableCheckedRow");
+            });
+        });
+        document.getElementById("all").addEventListener("change", allSelect, false);
+        //CRUD delete
+        document.getElementById("btnDelete").addEventListener("click", doDelete, false);
+        //CRUD update
+        document.getElementById("btnUpdate").addEventListener("click", updateSearch, false);
+        //CRUD add
+        document.getElementById("btnAdd").addEventListener("click", doAdd, false);
+        //modal product operation
+        document.getElementById("btnProductOperationAdd").addEventListener("click", productOperationAdd, false);
+        //page select
+        document.querySelector(".pagination").addEventListener("click", event => {
+            let activeObject = document.querySelector(".pagination>.active");
+            if (activeObject != null) {
+                activeObject.classList.remove("active");
+            }
+            event.target.parentNode.classList.add("active");
+        }, false);
+    </script>
+</body>
+
+</html>

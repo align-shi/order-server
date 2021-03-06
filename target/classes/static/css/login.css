@@ -1,0 +1,22 @@
+#logo {
+    width: 140px;
+    height: 140px;
+    margin: 20px auto;
+    background: url(../img/timg.jpg) no-repeat 0px 0px/140px 150px;
+    border-radius:70px;
+}
+#errorMsg{
+    color:red;
+    margin-top:160px;
+}
+
+fieldset {
+    border: 0px;
+}
+
+@media screen and (min-width:992px){
+    .login_block{
+        width:500px;
+        margin:auto;
+    }
+}
