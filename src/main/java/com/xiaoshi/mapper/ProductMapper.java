@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -50,7 +51,8 @@ public interface ProductMapper {
             @Result(property = "imageUrl",column = "image_url"),
             @Result(property = "productType",column = "product_type"),
             @Result(property = "salesVolume",column = "sales_volume"),
-            @Result(property = "typeName",column = "type_name")
+            @Result(property = "typeName",column = "type_name"),
+            @Result(property = "image",column = "image",jdbcType = JdbcType.BLOB)
     })
     public Map<String,Object> queryProductsById(int id);
 

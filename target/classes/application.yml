@@ -17,15 +17,13 @@ spring:
 #    suffix: .html
 #    encoding: UTF-8
 #    mode: HTML5
-  devtools:   # 热部署
-    restart:
-      enabled: true  #设置开启热部署
   logging:    # 日志
     config: classpath:log4j2.yml
 debug: true
 mybatis:    # ORM设置
   configuration:
     map-underscore-to-camel-case: true    #下划线规范和驼峰规范的转换
+  mapper-locations: classpath:mapping/*Mapper.xml
 pagehelper:   # 分页
   helperDialect: mysql    # 设置方言，指定分页插件针对的具体的数据库
 server:

@@ -2,7 +2,9 @@ package com.xiaoshi.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Product;
+import com.xiaoshi.dto.ProductListDTO;
 import com.xiaoshi.mapper.ProductImageMapper;
 import com.xiaoshi.mapper.ProductMapper;
 import com.xiaoshi.service.iface.ProductService;
@@ -63,8 +65,15 @@ public class ProductServiceImpl implements ProductService {
     public PageInfo<Map<String,Object>> getProductsAllByPage(int pageNum,int size) {
         PageHelper.startPage(pageNum,size);
         List<Map<String,Object>> list=productMapper.queryProductsMap();
-        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public UnifyResponse<Object> getProductList(ProductListDTO productListDTO) {
+        PageHelper.startPage(productListDTO.getPageNo(), productListDTO.getPageSize());
+        PageHelper.startPage(productListDTO.getPageNo(), productListDTO.getPageSize());
+        List<Map<String,Object>> list=productMapper.queryProductsMap();
+        return UnifyResponse.success(new PageInfo<>(list));
     }
 
     @Override

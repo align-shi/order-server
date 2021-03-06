@@ -1,7 +1,9 @@
 package com.xiaoshi.service.iface;
 
 import com.github.pagehelper.PageInfo;
+import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Product;
+import com.xiaoshi.dto.ProductListDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,13 @@ import java.util.Map;
  */
 public interface ProductService {
     public boolean insertProduct(Product product);
+
+    /**
+     * 查询产品列表
+     * @return
+     */
+    UnifyResponse<Object> getProductList(ProductListDTO productListDTO);
+
     public boolean deleteProducts(String ids);
     public boolean updateProduct(Product product);
     public List<Map<String,Object>> getProductsAll();

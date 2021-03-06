@@ -15,7 +15,7 @@ public class UnifyResponse<T> implements Serializable {
 
     @Getter
     @Setter
-    private T message;
+    private String message;
 
     @Getter
     @Setter
@@ -25,19 +25,31 @@ public class UnifyResponse<T> implements Serializable {
     @Setter
     private int status;
 
+    @Getter
+    @Setter
+    private T data;
+
     @Override
     public String toString() {
         return "{" +
                 "message=" + message +
                 ", code=" + code +
                 ", status=" + status +
+                ", data=" + data +
                 '}';
     }
 
-    public UnifyResponse(T message, int code, int status) {
+    public UnifyResponse(String message, int code, int status) {
         this.message = message;
         this.code = code;
         this.status = status;
+    }
+
+    public UnifyResponse(String message, int code, int status, T data) {
+        this.message = message;
+        this.code = code;
+        this.status = status;
+        this.data = data;
     }
 
     public UnifyResponse(int code, int status) {
@@ -46,14 +58,14 @@ public class UnifyResponse<T> implements Serializable {
     }
 
     public static <T> UnifyResponse<T> success() {
-        return success(null);
+        return new UnifyResponse<T>("成功",0, 200);
     }
 
-    public static <T> UnifyResponse<T> success(T message) {
-        return new UnifyResponse<T>(message, 0, 200);
+    public static <T> UnifyResponse<T> success(T data) {
+        return new UnifyResponse<T>("成功", 0, 200,data);
     }
 
-    public static <T> UnifyResponse<T> error(T message) {
+    public static <T> UnifyResponse<T> error(String message) {
         return new UnifyResponse<T>(message, -1, 500);
     }
 }

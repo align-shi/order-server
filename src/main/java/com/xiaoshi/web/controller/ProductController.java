@@ -2,7 +2,9 @@ package com.xiaoshi.web.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xiaoshi.Constants;
+import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Product;
+import com.xiaoshi.dto.ProductListDTO;
 import com.xiaoshi.service.iface.ProductService;
 import com.xiaoshi.service.iface.TypeService;
 import lombok.extern.log4j.Log4j2;
@@ -16,8 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-@Controller
-@RequestMapping("api/v1/product")
+@RestController
+@RequestMapping("product")
 @Log4j2
 public class ProductController {
 
@@ -28,11 +30,17 @@ public class ProductController {
 
     @RequestMapping("/list/{pageNumber}")
     public ModelAndView productList(@PathVariable String pageNumber){
-        PageInfo<Map<String,Object>> page =productService.getProductsAllByPage(Integer.valueOf(pageNumber), Constants.PAGE_NUMBER);
+        PageInfo<Map<String,Object>> page =productService.getProductsAllByPage(Integer.parseInt(pageNumber), Constants.PAGE_NUMBER);
         ModelAndView mav=new ModelAndView("views/product");
         mav.addObject("page",page);
         mav.addObject("types",typeService.getTypesAll());
         return mav;
+    }
+
+    @GetMapping("/list")
+    public UnifyResponse<Object> getProductList(ProductListDTO productListDTO){
+
+        return productService.getProductList(productListDTO);
     }
 
     @RequestMapping("/search/{id}")

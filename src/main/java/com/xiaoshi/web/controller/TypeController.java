@@ -2,33 +2,37 @@ package com.xiaoshi.web.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xiaoshi.Constants;
+import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Type;
 import com.xiaoshi.service.iface.TypeService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Controller
-@RequestMapping("api/v1/type")
+@RestController
+@RequestMapping("type")
+@Slf4j
 public class TypeController {
 
     @Resource
     TypeService typeService;
 
+
     @RequestMapping("/list/{pageNumber}")
-    public ModelAndView getUsersByPage(@PathVariable int pageNumber){
+    public UnifyResponse<Object> getUsersByPage(@PathVariable int pageNumber){
         PageInfo<Type> page=typeService.getTypesByPage(pageNumber, Constants.PAGE_NUMBER);
-        ModelAndView mav=new ModelAndView("views/type");
-        mav.addObject("page",page);
-        return mav;
+        return UnifyResponse.success(page);
     }
+
+    @GetMapping("/list")
+    public UnifyResponse<Object> getTypeList(){
+        return typeService.getTypeList();
+    }
+
 
     @RequestMapping("/search/{id}")
     public @ResponseBody Type searchType(@PathVariable int id){

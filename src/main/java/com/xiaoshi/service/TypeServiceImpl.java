@@ -2,6 +2,7 @@ package com.xiaoshi.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Type;
 import com.xiaoshi.mapper.TypeMapper;
 import com.xiaoshi.service.iface.TypeService;
@@ -32,6 +33,12 @@ public class TypeServiceImpl implements TypeService {
         List<Type> list=typeMapper.queryType();
         PageInfo<Type> page=new PageInfo<>(list);
         return page;
+    }
+
+    @Override
+    public UnifyResponse<Object> getTypeList() {
+        List<Type> list=typeMapper.queryType();
+        return UnifyResponse.success(list);
     }
 
     @Override
