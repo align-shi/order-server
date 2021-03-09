@@ -23,9 +23,12 @@ debug: true
 mybatis:    # ORM设置
   configuration:
     map-underscore-to-camel-case: true    #下划线规范和驼峰规范的转换
-  mapper-locations: classpath:mapping/*Mapper.xml
+  mapper-locations: classpath:mapper/*Mapper.xml
 pagehelper:   # 分页
   helperDialect: mysql    # 设置方言，指定分页插件针对的具体的数据库
 server:
   max-http-header-size:102400
+
+image:
+  url: http://localhost:8080/
 

@@ -21,7 +21,7 @@ public interface ProductService {
     UnifyResponse<Object> getProductList(ProductListDTO productListDTO);
 
     public boolean deleteProducts(String ids);
-    public boolean updateProduct(Product product);
+    UnifyResponse<Object>  updateProduct(Product product);
     public List<Map<String,Object>> getProductsAll();
     public PageInfo<Map<String,Object>> getProductsAllByPage(int pageNum,int size);
     public Map<String,Object> getProductsByType(int typeId);

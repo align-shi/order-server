@@ -5,10 +5,13 @@ import com.github.pagehelper.PageInfo;
 import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Product;
 import com.xiaoshi.dto.ProductListDTO;
+import com.xiaoshi.mapper.ProdecterMapper;
 import com.xiaoshi.mapper.ProductImageMapper;
 import com.xiaoshi.mapper.ProductMapper;
 import com.xiaoshi.service.iface.ProductService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,8 +25,14 @@ import java.util.*;
 public class ProductServiceImpl implements ProductService {
     @Resource
     ProductMapper productMapper;
+
+    @Autowired
+    private ProdecterMapper prodecterMapper;
     @Resource
     ProductImageMapper productImageMapper;
+
+    @Value("${image.url}")
+    private String imgUrl;
 
     @Override
     public boolean insertProduct(Product product) {
@@ -48,12 +57,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean updateProduct(Product product) {
-        boolean flag=false;
-        if(productMapper.updateProduct(product)==1){
-            flag=true;
-        }
-        return flag;
+    public UnifyResponse<Object> updateProduct(Product product) {
+        prodecterMapper.update(product);
+        return UnifyResponse.success();
     }
 
     @Override
@@ -73,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(productListDTO.getPageNo(), productListDTO.getPageSize());
         PageHelper.startPage(productListDTO.getPageNo(), productListDTO.getPageSize());
         List<Map<String,Object>> list=productMapper.queryProductsMap();
+        list.forEach(map -> map.put("imgUrl", imgUrl + map.get("imageUrl")));
         return UnifyResponse.success(new PageInfo<>(list));
     }
 

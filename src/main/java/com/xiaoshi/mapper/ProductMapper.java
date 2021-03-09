@@ -59,6 +59,9 @@ public interface ProductMapper {
     @Update("update of_product set image=#{image,jdbcType=BLOB} where id=#{id}")
     public Integer updateImage(Product product);
 
-    @Update("update of_product set name=#{name},price=#{price},real_price=#{realPrice},product_type=#{productType},trait=#{trait},sales_volume=#{salesVolume},detail=#{detail} where id=#{id}")
+    @Update("update of_product set name=#{name},price=#{price},real_price=#{realPrice}," +
+            "product_type=#{productType},trait=#{trait},sales_volume=#{salesVolume}," +
+            "detail=#{detail},stauts= #{stauts}" +
+            " where id=#{id}")
     public int updateProduct(Product product);
 }

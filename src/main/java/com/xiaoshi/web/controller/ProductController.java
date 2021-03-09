@@ -49,7 +49,7 @@ public class ProductController {
         return map;
     }
 
-    @RequestMapping("/update")
+    /*@RequestMapping("/update")
     public void updateType(Product product,HttpServletResponse response) throws IOException {
         PrintWriter out=response.getWriter();
         if(productService.updateProduct(product)){
@@ -59,6 +59,11 @@ public class ProductController {
         }
         out.flush();
         out.close();
+    }*/
+
+    @PostMapping("/update")
+    public UnifyResponse<Object> updateType(@RequestBody Product product){
+        return productService.updateProduct(product);
     }
 
     @PostMapping("/add")
