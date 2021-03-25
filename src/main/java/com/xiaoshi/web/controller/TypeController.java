@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @RestController
 @RequestMapping("type")
@@ -39,7 +40,7 @@ public class TypeController {
         Type type=typeService.getTypeById(id);
         return type;
     }
-    @RequestMapping("/update")
+    /*@RequestMapping("/update")
     public void updateType(Type type,HttpServletResponse response) throws IOException {
         PrintWriter out=response.getWriter();
         if(typeService.updateType(type)){
@@ -49,9 +50,14 @@ public class TypeController {
         }
         out.flush();
         out.close();
+    }*/
+
+    @PostMapping("/update")
+    public UnifyResponse<Object> updateTypeName(@RequestBody Type type) {
+        return typeService.updateTypeName(type);
     }
 
-    @RequestMapping("/delete/{ids}")
+    /*@RequestMapping("/delete/{ids}")
     public void deleteTypes(@PathVariable String ids,HttpServletResponse response) throws IOException {
         PrintWriter out=response.getWriter();
         if(typeService.deleteTypes(ids)){
@@ -61,9 +67,14 @@ public class TypeController {
         }
         out.flush();
         out.close();
+    }*/
+
+    @PostMapping("/delete")
+    public UnifyResponse<Object> delete(@RequestParam("ids") List<Integer> ids) {
+        return typeService.delete(ids);
     }
 
-    @RequestMapping("/add")
+    /*@RequestMapping("/add")
     public void addType(Type type, HttpServletResponse response) throws IOException {
         PrintWriter out=response.getWriter();
         PageInfo<Type> page=typeService.getTypesByPage(1, Constants.PAGE_NUMBER);
@@ -75,5 +86,10 @@ public class TypeController {
         }
         out.flush();
         out.close();
+    }*/
+
+    @PostMapping("/add")
+    public UnifyResponse<Object> addNewType(@RequestBody Type type) {
+        return typeService.addNewType(type);
     }
 }

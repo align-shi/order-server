@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ProductListDTO extends BaseSearchDTO {
 
-    private String productName;
+    private String name;
 
-    private String type;
+    private String productType;
 }

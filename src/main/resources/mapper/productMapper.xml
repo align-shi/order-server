@@ -9,6 +9,14 @@
         <result column="realName" jdbcType="VARCHAR" property="realName" />
     </resultMap>-->
 
+    <resultMap id="productMap" type="java.util.Map">
+        <result column="real_price" jdbcType="DECIMAL" property="realPrice"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="product_type" jdbcType="INTEGER" property="productType"/>
+        <result column="sales_volume" jdbcType="INTEGER" property="salesVolume"/>
+        <result column="type_name" jdbcType="VARCHAR" property="typeName"/>
+    </resultMap>
+
     <update id="update" parameterType="com.xiaoshi.domain.Product">
         update
             of_product
@@ -16,7 +24,7 @@
             <if test="name != null">name=#{name},</if>
             <if test="price != null">price=#{price},</if>
             <if test="realPrice != null">real_price=#{realPrice},</if>
-            <if test="productType != null">product_type=#{productType},</if>
+            <if test="typeName != null">product_type=#{typeName},</if>
             <if test="trait != null">trait=#{trait},</if>
             <if test="salesVolume != null">sales_volume=#{salesVolume},</if>
             <if test="detail != null">detail=#{detail},</if>
@@ -24,5 +32,26 @@
         where
               id=#{id}
     </update>
+
+    <insert id="addOne" parameterType="com.xiaoshi.domain.Product">
+        insert into of_product
+        ( name, price, real_price, product_type
+        , trait, sales_volume, stauts, detail,image_url)
+        values (#{name}, #{price}, #{realPrice}, #{productType},
+                #{trait}, 0, 0, #{detail},#{imageUrl});
+    </insert>
+
+    <select id="selectAll" resultMap="productMap" parameterType="com.xiaoshi.dto.ProductListDTO">
+        select op.id,op.name,op.price,op.real_price,op.product_type
+        ,op.trait,op.sales_volume,op.stauts,op.detail,op.image_url,op.good,ot.type_name,ot.sort
+        from of_product op left outer join of_type ot on op.product_type=ot.id
+        where 1=1
+        <if test="name != ''">
+           and op.name like "%"#{name}"%"
+        </if>
+        <if test="productType != ''">
+           and op.product_type = #{productType}
+        </if>
+    </select>
 
 </mapper>

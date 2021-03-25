@@ -10,10 +10,12 @@ import com.xiaoshi.service.iface.TypeService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -43,6 +45,16 @@ public class ProductController {
         return productService.getProductList(productListDTO);
     }
 
+    @PostMapping("/upload")
+    public UnifyResponse<Object> uploadImage(MultipartFile file) {
+        try {
+            return productService.uploadImage(file);
+        } catch (IOException e) {
+            log.error("");
+        }
+        return UnifyResponse.error("上传不成功");
+    }
+
     @RequestMapping("/search/{id}")
     public @ResponseBody Map<String,Object> searchType(@PathVariable int id){
         Map<String,Object> map=productService.getProductById(id);
@@ -66,7 +78,7 @@ public class ProductController {
         return productService.updateProduct(product);
     }
 
-    @PostMapping("/add")
+    /*@PostMapping("/add")
     public void addOperation(HttpServletResponse response, Product product) throws IOException {
         PrintWriter out=response.getWriter();
         if(productService.insertProduct(product)){
@@ -76,7 +88,13 @@ public class ProductController {
         }
         out.flush();
         out.close();
+    }*/
+
+    @PostMapping("/add")
+    public UnifyResponse<Object> addOperation(@RequestBody Product product){
+        return productService.addOperation(product);
     }
+
     @GetMapping("/{id}")
     public @ResponseBody Map<String,Object> getProduct(@PathVariable String id){
         Map<String,Object> product=productService.getProductById(Integer.valueOf(id));

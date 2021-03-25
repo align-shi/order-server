@@ -13,8 +13,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -77,10 +82,46 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public UnifyResponse<Object> getProductList(ProductListDTO productListDTO) {
         PageHelper.startPage(productListDTO.getPageNo(), productListDTO.getPageSize());
-        PageHelper.startPage(productListDTO.getPageNo(), productListDTO.getPageSize());
-        List<Map<String,Object>> list=productMapper.queryProductsMap();
+        List<Map<String,Object>> list=prodecterMapper.selectAll(productListDTO);
         list.forEach(map -> map.put("imgUrl", imgUrl + map.get("imageUrl")));
         return UnifyResponse.success(new PageInfo<>(list));
+    }
+
+    @Override
+    public UnifyResponse<Object> uploadImage(MultipartFile photo) throws IOException {
+        if(!photo.isEmpty()){
+
+            //文件上传的地址
+            String path = ResourceUtils.getURL("classpath:").getPath()+"static/upload";
+            String realPath = path.replace('/', '\\').substring(1,path.length());
+            //用于查看路径是否正确
+            System.out.println(realPath);
+
+            //获取文件的名称
+            final String fileName = photo.getOriginalFilename();
+
+            //限制文件上传的类型
+            String contentType = photo.getContentType();
+            if("image/jpeg".equals(contentType) || "image/jpg".equals(contentType) ){
+                assert fileName != null;
+                File file = new File(realPath,fileName);
+
+                //完成文件的上传
+                photo.transferTo(file);
+                log.info("图片上传成功!");
+                return UnifyResponse.success("upload/"+fileName);
+            } else {
+                return UnifyResponse.error("图片类型错误");
+            }
+        } else {
+            return UnifyResponse.error("图片上传失败");
+        }
+    }
+
+    @Override
+    public UnifyResponse<Object> addOperation(Product product) {
+        prodecterMapper.addOne(product);
+        return UnifyResponse.success();
     }
 
     @Override

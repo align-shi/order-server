@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Type;
 import com.xiaoshi.mapper.TypeMapper;
+import com.xiaoshi.mapper.TypeNewMapper;
 import com.xiaoshi.service.iface.TypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +19,10 @@ public class TypeServiceImpl implements TypeService {
 
     @Resource
     TypeMapper typeMapper;
+
+    @Autowired
+    private TypeNewMapper typeNewMapper;
+
     @Override
     public List<Type> getTypesAll() {
         return typeMapper.queryType();
@@ -39,6 +45,26 @@ public class TypeServiceImpl implements TypeService {
     public UnifyResponse<Object> getTypeList() {
         List<Type> list=typeMapper.queryType();
         return UnifyResponse.success(list);
+    }
+
+    @Override
+    public UnifyResponse<Object> updateTypeName(Type type) {
+        typeNewMapper.updateOne(type);
+        return UnifyResponse.success();
+    }
+
+    @Override
+    public UnifyResponse<Object> addNewType(Type type) {
+        typeNewMapper.saveOne(type);
+        return UnifyResponse.success();
+    }
+
+    @Override
+    public UnifyResponse<Object> delete(List<Integer> ids) {
+        ids.forEach(id ->{
+            typeNewMapper.delete(id);
+        });
+        return UnifyResponse.success();
     }
 
     @Override

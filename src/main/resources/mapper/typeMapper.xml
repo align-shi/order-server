@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.mapper.TypeNewMapper">
+
+    <update id="updateOne" parameterType="com.xiaoshi.domain.Type">
+        update
+            of_type
+        set
+        <if test="typeName != ''">type_name=#{typeName}</if>
+        where id=#{id}
+    </update>
+
+    <insert id="saveOne" parameterType="com.xiaoshi.domain.Type">
+        insert into of_type(type_name, remark, sort)
+        values (#{typeName}, #{remark}, #{sort});
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update
+            of_type
+        set
+            deleted = 1
+        where id = #{id}
+    </delete>
+</mapper>

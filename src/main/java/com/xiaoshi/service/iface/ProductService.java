@@ -4,7 +4,11 @@ import com.github.pagehelper.PageInfo;
 import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Product;
 import com.xiaoshi.dto.ProductListDTO;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +23,20 @@ public interface ProductService {
      * @return
      */
     UnifyResponse<Object> getProductList(ProductListDTO productListDTO);
+
+    /**
+     * 上传图片
+     * @param file 图片
+     * @return
+     */
+    UnifyResponse<Object> uploadImage(MultipartFile file) throws IOException;
+
+    /**
+     * 新增一个产品
+     * @param product
+     * @return
+     */
+    UnifyResponse<Object> addOperation(Product product);
 
     public boolean deleteProducts(String ids);
     UnifyResponse<Object>  updateProduct(Product product);

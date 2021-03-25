@@ -25,13 +25,13 @@ public class ProductMapperTest {
     @Resource
     ProductMapper productMapper;
 
-    @Test
-    public void testInsertProduct(){
-        Product product=Product.of("圣代",new BigDecimal(9),new BigDecimal(4),4,"冷饮",356,0,"圣代,是一种冰激凌甜点,传统的圣代会用一到两勺冰激凌,上面点缀一些果酱或糖浆,有的也在上面用一层糖霜、打发奶油、樱桃或其他水果(香蕉、菠萝)。");
-        int rowNumber=productMapper.insertProduct(product);
-        log.debug("rowNumber:"+rowNumber);
-        log.debug("product object id is:"+product.getId());
-    }
+//    @Test
+//    public void testInsertProduct(){
+//        Product product=Product.of("圣代",new BigDecimal(9),new BigDecimal(4),4,"冷饮",356,0,"圣代,是一种冰激凌甜点,传统的圣代会用一到两勺冰激凌,上面点缀一些果酱或糖浆,有的也在上面用一层糖霜、打发奶油、樱桃或其他水果(香蕉、菠萝)。");
+//        int rowNumber=productMapper.insertProduct(product);
+//        log.debug("rowNumber:"+rowNumber);
+//        log.debug("product object id is:"+product.getId());
+//    }
 
     @Test
     public void testGetProductsByIds(){

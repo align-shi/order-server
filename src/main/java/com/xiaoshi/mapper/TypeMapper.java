@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.*;
  */
 public interface TypeMapper {
 
-    @Select("select id,type_name,remark,sort from of_type order by sort")
+    @Select("select id,type_name,remark,sort from of_type where deleted = 0 order by sort")
     public List<Type> queryType();
 
     @Insert("insert into of_type(type_name,remark,sort) values(#{typeName},#{remark},#{sort})")
