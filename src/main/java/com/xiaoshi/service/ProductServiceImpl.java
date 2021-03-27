@@ -69,7 +69,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Map<String,Object>> getProductsAll() {
-        return productMapper.queryProductsMap();
+        List<Map<String, Object>> list = productMapper.queryProductsMap();
+        list.forEach(map -> map.put("num",0));
+        return list;
     }
 
     @Override

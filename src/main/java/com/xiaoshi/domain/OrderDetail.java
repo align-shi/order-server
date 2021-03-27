@@ -24,4 +24,8 @@ public class OrderDetail {
     @NonNull
     private BigDecimal subtotal;        //小计价格
 
+    private Integer status;
+
+    private String imageUrl;
+
 }

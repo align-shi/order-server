@@ -32,4 +32,6 @@ public class Order {
     //适配前端
     private String[] ids;
     private List<Product> shoppingCart;
+
+    private String username;
 }
