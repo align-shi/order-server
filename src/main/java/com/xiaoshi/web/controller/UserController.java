@@ -1,6 +1,8 @@
 package com.xiaoshi.web.controller;
 
 import com.xiaoshi.config.UnifyResponse;
+import com.xiaoshi.domain.FeedbackDTO;
+import com.xiaoshi.domain.WeChatUser;
 import com.xiaoshi.dto.UserLoginDTO;
 import com.xiaoshi.service.iface.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -42,6 +44,22 @@ public class UserController {
             log.error("报错", e);
         }
         return UnifyResponse.error("用户名密码错误!!!");
+    }
+
+    @PostMapping("/save")
+    public UnifyResponse<Object> saveUserInfo(@RequestBody WeChatUser weChatUser) {
+        return userService.saveUserInfo(weChatUser);
+    }
+
+    @GetMapping("/info/{username}")
+    public UnifyResponse<Object> getUserInfo(@PathVariable(name = "username") String username) {
+        log.info("{}登录查询",username);
+        return userService.getUserInfo(username);
+    }
+
+    @PostMapping("/feedback")
+    public UnifyResponse<Object> feedback(@RequestBody FeedbackDTO feedbackDTO){
+        return userService.feedback(feedbackDTO);
     }
 
 }

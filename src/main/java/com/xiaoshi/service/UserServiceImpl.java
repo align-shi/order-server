@@ -1,6 +1,9 @@
 package com.xiaoshi.service;
 
+import com.xiaoshi.config.UnifyResponse;
+import com.xiaoshi.domain.FeedbackDTO;
 import com.xiaoshi.domain.User;
+import com.xiaoshi.domain.WeChatUser;
 import com.xiaoshi.mapper.UserMapper;
 import com.xiaoshi.service.iface.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -54,5 +57,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Optional<User> getUser(int id) {
 		return Optional.empty();
+	}
+
+	@Override
+	public UnifyResponse<Object> saveUserInfo(WeChatUser weChatUser) {
+		userMapper.saveWechatUser(weChatUser);
+		return UnifyResponse.success();
+	}
+
+	@Override
+	public UnifyResponse<Object> getUserInfo(String username) {
+		return UnifyResponse.success(userMapper.getUserInfo(username));
+	}
+
+	@Override
+	public UnifyResponse<Object> feedback(FeedbackDTO feedbackDTO) {
+		userMapper.saveFeedback(feedbackDTO);
+		return UnifyResponse.success();
 	}
 }

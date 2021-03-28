@@ -3,7 +3,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.xiaoshi.config.UnifyResponse;
+import com.xiaoshi.domain.FeedbackDTO;
 import com.xiaoshi.domain.User;
+import com.xiaoshi.domain.WeChatUser;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface UserService {
 
@@ -16,7 +20,11 @@ public interface UserService {
 	public boolean deleteUser(String ids);
 	
 	public Optional<User> getUser(int id);
-	
 
+	UnifyResponse<Object> saveUserInfo(WeChatUser weChatUser);
+
+	UnifyResponse<Object> getUserInfo(String username);
+
+	UnifyResponse<Object> feedback(FeedbackDTO feedbackDTO);
 	
 }
