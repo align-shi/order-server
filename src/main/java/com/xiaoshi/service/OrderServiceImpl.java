@@ -1,12 +1,17 @@
 package com.xiaoshi.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.Order;
 import com.xiaoshi.domain.OrderDetail;
+import com.xiaoshi.dto.OrderDTO;
 import com.xiaoshi.mapper.OrderDetailMapper;
 import com.xiaoshi.mapper.OrderMapper;
+import com.xiaoshi.mapper.OrderNewMapper;
 import com.xiaoshi.service.iface.OrderService;
 import com.xiaoshi.service.iface.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +33,8 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDetailMapper orderDetailMapper;
 
-    @Resource
-    private ProductService productService;
+    @Autowired
+    private OrderNewMapper orderNewMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -81,5 +86,22 @@ public class OrderServiceImpl implements OrderService {
             map.put("detail", id);
         });
         return UnifyResponse.success(orderInfoByName);
+    }
+
+    @Override
+    public UnifyResponse<Object> getOrderInfo(String username, Integer pageSize, Integer pageNo) {
+        PageHelper.startPage(pageNo, pageSize);
+
+        OrderDTO dto = new OrderDTO();
+        dto.setUsername(username);
+        List<Map<String, Object>> maps = orderNewMapper.queryOrder(dto);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        maps.forEach(map ->{
+            Timestamp time = (Timestamp) map.get("create_time");
+            map.put("create_time",df.format(time));
+            List<OrderDetail> id = orderDetailMapper.getOrderDetailById((Integer) map.get("id"));
+            map.put("detail", id);
+        });
+        return UnifyResponse.success(new PageInfo<>(maps));
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshi.mapper.OrderNewMapper">
+
+
+    <resultMap id="orderMap" type="java.util.Map">
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+    </resultMap>
+
+    <select id="queryOrder" parameterType="com.xiaoshi.dto.OrderDTO" resultMap="orderMap">
+        select * from of_order
+        <if test="username != '' and username != null">
+            where create_user like "%"#{username}"%"
+        </if>
+    </select>
+
+    <update id="update" parameterType="java.lang.String">
+        update of_order set create_user = #{user}
+        where id = 1
+    </update>
+</mapper>

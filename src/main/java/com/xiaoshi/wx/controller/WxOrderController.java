@@ -51,4 +51,12 @@ public class WxOrderController {
         log.info("{}请求订单列表",username);
         return orderService.orderInfo(username, status);
     }
+
+    @GetMapping("/order/allList")
+    public UnifyResponse<Object> getOrderInfo(String username,
+                                              @RequestParam("pageSize") Integer pageSize,
+                                              @RequestParam("pageNo") Integer pageNo) {
+        log.info("{}请求所有订单列表",username);
+        return orderService.getOrderInfo(username, pageSize,pageNo);
+    }
 }

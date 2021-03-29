@@ -62,4 +62,9 @@ public class UserController {
         return userService.feedback(feedbackDTO);
     }
 
+    @GetMapping("/getFeedback")
+    public UnifyResponse<Object> getFeedBack(Integer pageSize,Integer pageNo,String username) {
+        return userService.getFeedBack(pageSize, pageNo, username);
+    }
+
 }

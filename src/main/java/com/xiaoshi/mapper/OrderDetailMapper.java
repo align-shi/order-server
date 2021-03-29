@@ -33,7 +33,10 @@ public interface OrderDetailMapper {
     @Update("update of_order_detail set status = #{status}  where order_id = #{id}")
     int updateOrderDetailStatus(Integer id,Integer status);
 
-    @Select("select * from of_order where create_user = #{username} and pay_status = #{status}")
+    @Select("select * from of_order where create_user = #{username} and pay_status = #{status} order by create_time")
     List<Map<String, Object>> getOrderInfoByName(String username,Integer status);
+
+    @Select("select * from of_order where create_user = #{username} order by create_time")
+    List<Map<String, Object>> getOrderInfoByUser(String username);
 
 }

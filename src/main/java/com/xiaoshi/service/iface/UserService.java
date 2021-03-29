@@ -26,5 +26,7 @@ public interface UserService {
 	UnifyResponse<Object> getUserInfo(String username);
 
 	UnifyResponse<Object> feedback(FeedbackDTO feedbackDTO);
+
+	UnifyResponse<Object> getFeedBack(Integer pageSize, Integer pageNo, String username);
 	
 }
