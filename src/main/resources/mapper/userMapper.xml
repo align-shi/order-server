@@ -8,4 +8,19 @@
             where create_user like "%"#{username}"%"
         </if>
     </select>
+
+    <select id="queryAllUser" resultType="java.util.Map" parameterType="java.lang.String">
+        select * from ofs_user_wx
+        <if test="username != '' and username != null">
+            where username like "%"#{username}"%"
+        </if>
+    </select>
+    
+    <update id="update" parameterType="com.xiaoshi.dto.EditUserDTO">
+        update ofs_user_wx
+        set
+            vip = #{status}
+        where username = #{username}
+
+    </update>
 </mapper>

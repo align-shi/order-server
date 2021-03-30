@@ -7,6 +7,7 @@ import com.xiaoshi.domain.FeedbackDTO;
 import com.xiaoshi.domain.OrderDetail;
 import com.xiaoshi.domain.User;
 import com.xiaoshi.domain.WeChatUser;
+import com.xiaoshi.dto.EditUserDTO;
 import com.xiaoshi.mapper.UserMapper;
 import com.xiaoshi.mapper.UserNewMapper;
 import com.xiaoshi.service.iface.UserService;
@@ -97,5 +98,18 @@ public class UserServiceImpl implements UserService {
 			map.put("create_time",df.format(time));
 		});
 		return UnifyResponse.success(new PageInfo<>(maps));
+	}
+
+	@Override
+	public UnifyResponse<Object> getUserList(Integer pageSize, Integer pageNo,String username) {
+		PageHelper.startPage(pageNo, pageSize);
+		List<Map<String, Object>> maps = userNewMapper.queryAllUser(username);
+		return UnifyResponse.success(new PageInfo<>(maps));
+	}
+
+	@Override
+	public UnifyResponse<Object> editVipInfo(EditUserDTO editUserDTO) {
+		userNewMapper.update(editUserDTO);
+		return UnifyResponse.success();
 	}
 }

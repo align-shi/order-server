@@ -3,6 +3,7 @@ package com.xiaoshi.web.controller;
 import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.FeedbackDTO;
 import com.xiaoshi.domain.WeChatUser;
+import com.xiaoshi.dto.EditUserDTO;
 import com.xiaoshi.dto.UserLoginDTO;
 import com.xiaoshi.service.iface.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -65,6 +66,16 @@ public class UserController {
     @GetMapping("/getFeedback")
     public UnifyResponse<Object> getFeedBack(Integer pageSize,Integer pageNo,String username) {
         return userService.getFeedBack(pageSize, pageNo, username);
+    }
+
+    @GetMapping("/getUserList")
+    public UnifyResponse<Object> getUserList(Integer pageSize,Integer pageNo,String username) {
+        return userService.getUserList(pageSize, pageNo,username);
+    }
+
+    @PostMapping("/edit")
+    public UnifyResponse<Object> editVipInfo(@RequestBody EditUserDTO editUserDTO) {
+        return userService.editVipInfo(editUserDTO);
     }
 
 }

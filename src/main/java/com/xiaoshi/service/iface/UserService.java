@@ -7,6 +7,7 @@ import com.xiaoshi.config.UnifyResponse;
 import com.xiaoshi.domain.FeedbackDTO;
 import com.xiaoshi.domain.User;
 import com.xiaoshi.domain.WeChatUser;
+import com.xiaoshi.dto.EditUserDTO;
 import org.springframework.web.bind.annotation.PathVariable;
 
 public interface UserService {
@@ -28,5 +29,9 @@ public interface UserService {
 	UnifyResponse<Object> feedback(FeedbackDTO feedbackDTO);
 
 	UnifyResponse<Object> getFeedBack(Integer pageSize, Integer pageNo, String username);
+
+	UnifyResponse<Object> getUserList(Integer pageSize, Integer pageNo,String username);
+
+	UnifyResponse<Object> editVipInfo(EditUserDTO editUserDTO);
 	
 }

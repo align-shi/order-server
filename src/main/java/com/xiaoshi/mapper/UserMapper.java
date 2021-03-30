@@ -50,7 +50,7 @@ public interface UserMapper {
     })
     int updateByPrimaryKey(User record);
 
-    @Insert("INSERT INTO ofs_user_wx( username, gender, vip) VALUES ( #{nickName}, #{gender}, #{vip});")
+    @Insert("INSERT INTO ofs_user_wx( username, gender, vip,image) VALUES ( #{nickName}, #{gender}, #{vip},#{avatarUrl})")
     int saveWechatUser(WeChatUser user);
 
     @Select("select * from ofs_user_wx where username = #{username}")

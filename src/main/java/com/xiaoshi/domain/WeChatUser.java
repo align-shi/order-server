@@ -16,4 +16,6 @@ public class WeChatUser {
     private String gender;
 
     private String vip;
+
+    private String avatarUrl;
 }
